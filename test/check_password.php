@@ -1,10 +1,14 @@
 <?php
-// Vérification du mot de passe à la première connexion
-include 'session.php';
+session_start();
+
+$secretPassword = "test";  // Définir le mot de passe secret
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if ($_POST['password'] === 'Jean3v16') {
-        $_SESSION['first_time_login'] = true;
+    // Utilisation de var_dump() pour déboguer la valeur reçue
+    var_dump($_POST['secret_password']);  // Affiche la valeur saisie dans le formulaire
+
+    if ($_POST['secret_password'] === $secretPassword) {
+        $_SESSION['secret_verified'] = true;
         header("Location: signup.html");
         exit();
     } else {
@@ -18,12 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vérification du Mot de Passe</title>
+    <title>Vérification du mot de passe secret</title>
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
     <form action="" method="POST">
-        <label for="password">Entrez le mot de passe :</label>
-        <input type="password" name="password" required>
+        <label for="secret_password">Entrez le mot de passe secret :</label>
+        <input type="password" name="secret_password" required>
         <button type="submit">Vérifier</button>
     </form>
 </body>
