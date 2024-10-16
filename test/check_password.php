@@ -12,7 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: signup.html");
         exit();
     } else {
-        echo "Mot de passe incorrect.";
+        // Afficher un message d'erreur et la valeur saisie pour débogage
+        echo "Mot de passe incorrect.<br>";
+        echo "Vous avez entré : ";
+        var_dump($_POST['secret_password']);  // Affiche la valeur saisie dans le formulaire
     }
 }
 ?>
@@ -29,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="" method="POST">
         <label for="secret_password">Entrez le mot de passe secret :</label>
         <input type="password" name="secret_password" required>
-        <button type="submit">Vérifier</button>
+        <button type="submit">Valider</button>
     </form>
 </body>
 </html>

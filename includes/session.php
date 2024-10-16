@@ -1,21 +1,21 @@
 <?php
-// Démarre une session
 session_start();
 
-// Durée de la session en secondes (par exemple, 30 minutes)
-$sessionDuration = 1800; // 30 minutes
-
-// Vérifie si la session est déjà définie
-if (isset($_SESSION['LAST_ACTIVITY'])) {
-    // Si la durée d'inactivité dépasse la durée de session définie, déconnecte l'utilisateur
-    if (time() - $_SESSION['LAST_ACTIVITY'] > $sessionDuration) {
-        session_unset();     // Libère toutes les variables de session
-        session_destroy();   // Détruit la session
-        header("Location: login.html"); // Redirige vers la page de connexion
-        exit();
-    }
+// Redirige l'utilisateur non connecté vers la page de connexion
+if (!isset($_SESSION['user_id']) && basename($_SERVER['PHP_SELF']) !== 'login.php' && basename($_SERVER['PHP_SELF']) !== 'signup.html' && basename($_SERVER['PHP_SELF']) !== 'check_password.php') {
+    header("Location: login.html");
+    exit();
 }
 
-// Met à jour la dernière activité
+// Déconnexion après 60 minutes d'inactivité
+$sessionTimeout = 3600;  // 60 minutes
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $sessionTimeout)) {
+    session_unset();
+    session_destroy();
+    header("Location: login.html");
+    exit();
+}
+
+// Met à jour l'activité de la session
 $_SESSION['LAST_ACTIVITY'] = time();
 ?>
