@@ -3,23 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S'inscrire - Test</title>
+    <title>Créer un compte</title>
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Styles pour la fenêtre modale */
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+    </style>
 </head>
 <body>
+    <div id="modal">
+        <div id="modal-content">
+            <p>Veuillez entrer le mot de passe secret pour continuer :</p>
+            <input type="password" id="secret-password" placeholder="Mot de passe secret" required>
+            <button onclick="verifyPassword()">Vérifier</button>
+            <p id="error-message" style="color:red;"></p>
+        </div>
+    </div>
+
     <header>
-        <h1>S'inscrire</h1>
+        <h1>Créer un compte</h1>
     </header>
     <main>
-        <form action="signup_process.php" method="POST">
+        <form id="signup-form" action="signup_process.php" method="POST" style="display: none;">
             <input type="text" name="first_name" placeholder="Prénom" required>
             <input type="text" name="last_name" placeholder="Nom" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="tel" name="phone" placeholder="Numéro de téléphone" required>
             <input type="password" name="password" placeholder="Mot de passe" required>
             <input type="password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
-            <button type="submit">S'inscrire</button>
+            <button type="submit">Créer un compte</button>
         </form>
     </main>
+
+    <script>
+        // Afficher la fenêtre modale au chargement de la page
+        window.onload = function() {
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function verifyPassword() {
+            var enteredPassword = document.getElementById('secret-password').value;
+            var correctPassword = 'Jean3v16';
+
+            if (enteredPassword === correctPassword) {
+                // Mot de passe correct, cacher la fenêtre modale et afficher le formulaire
+                document.getElementById('modal').style.display = 'none';
+                document.getElementById('signup-form').style.display = 'block';
+            } else {
+                // Afficher un message d'erreur
+                document.getElementById('error-message').textContent = 'Mot de passe incorrect';
+            }
+        }
+    </script>
 </body>
 </html>
