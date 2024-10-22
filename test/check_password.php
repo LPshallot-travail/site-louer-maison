@@ -2,6 +2,8 @@
 session_start();
 
 $secretPassword = "Jean3v16";  // Définir le mot de passe secret
+$errorMessage = "";  // Variable pour stocker le message d'erreur
+$userInput = "";  // Variable pour stocker l'entrée de l'utilisateur
 
 // Vérifie si la session a déjà été vérifiée
 if (isset($_SESSION['secret_verified']) && $_SESSION['secret_verified']) {
@@ -10,18 +12,15 @@ if (isset($_SESSION['secret_verified']) && $_SESSION['secret_verified']) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Utilisation de var_dump() pour déboguer la valeur reçue
-    var_dump($_POST['secret_password']);  // Affiche la valeur saisie dans le formulaire
+    $userInput = $_POST['secret_password'];  // Stocker la saisie utilisateur
 
-    if ($_POST['secret_password'] === $secretPassword) {
+    if ($userInput === $secretPassword) {
         $_SESSION['secret_verified'] = true; // Créer la session si le mot de passe est correct
         header("Location: signup.html");
         exit();
     } else {
-        // Afficher un message d'erreur et la valeur saisie pour débogage
-        echo "<p style='color: red;'>Mot de passe incorrect.</p>";
-        echo "Vous avez entré : ";
-        var_dump($_POST['secret_password']);  // Affiche la valeur saisie dans le formulaire
+        // Afficher un message d'erreur
+        $errorMessage = "Mot de passe incorrect.<br>Vous avez entré : " . htmlspecialchars($userInput); // Protéger contre XSS
     }
 }
 ?>
@@ -37,8 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <form action="" method="POST">
         <label for="secret_password">Entrez le mot de passe secret :</label>
-        <input type="password" name="secret_password" required>
+        <input type="password" name="secret_password" value="<?php echo htmlspecialchars($userInput); ?>" required>
         <button type="submit">Valider</button>
+        <?php if ($errorMessage): ?>
+            <p style='color: red;'><?php echo $errorMessage; ?></p>
+        <?php endif; ?>
     </form>
 </body>
 </html>

@@ -7,6 +7,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     header("Location: http://localhost/test-location-maison/test/");
     exit();
 }
+
+// Vérifiez si l'action de suppression de session est demandée
+if (isset($_GET['action']) && $_GET['action'] === 'clear_secret') {
+    // Supprimez la session du mot de passe secret
+    unset($_SESSION['secret_verified']);
+    echo "<p class='success'>La session du mot de passe secret a été supprimée.</p>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,5 +31,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         <li><a href="login.html">Se connecter</a></li>
         <li><a href="check_password.php">Créer un compte</a></li>
     </ul>
+    
+    <!-- Lien pour supprimer la session du mot de passe secret -->
+    <a href="?action=clear_secret">Supprimer la session du mot de passe secret</a>
 </body>
 </html>
