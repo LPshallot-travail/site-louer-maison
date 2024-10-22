@@ -2,7 +2,7 @@
 session_start();
 
 // Redirige l'utilisateur non connecté vers la page de connexion
-if (!isset($_SESSION['user_id']) && basename($_SERVER['PHP_SELF']) !== 'login.php' && basename($_SERVER['PHP_SELF']) !== 'signup.html' && basename($_SERVER['PHP_SELF']) !== 'check_password.php') {
+if (!isset($_SESSION['user_id']) && !isset($_SESSION['secret_verified']) && basename($_SERVER['PHP_SELF']) !== 'login.html' && basename($_SERVER['PHP_SELF']) !== 'signup.html' && basename($_SERVER['PHP_SELF']) !== 'check_password.php') {
     header("Location: login.html");
     exit();
 }

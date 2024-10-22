@@ -1,76 +1,102 @@
+<?php
+session_start();
+
+// Vérifie si la session du mot de passe secret est présente
+if (!isset($_SESSION['secret_verified'])) {
+    header("Location: check_password.php"); // Redirige vers la page de vérification du mot de passe
+    exit();
+}
+
+// Vérifie si le formulaire d'inscription a été soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Traitement de l'inscription ici (ajoutez votre logique d'inscription)
+    
+    // Exemple de logique d'inscription :
+    $firstName = $_POST['first_name'];
+    $lastName = $_POST['last_name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirm_password'];
+
+    // Assurez-vous que le mot de passe et la confirmation correspondent
+    if ($password === $confirmPassword) {
+        // Ici, vous pouvez ajouter le code pour insérer les données dans la base de données
+        // Par exemple, en utilisant PDO ou MySQLi pour exécuter une requête d'insertion.
+
+        // Simulez une inscription réussie pour l'exemple
+        // Vous pouvez remplacer cette section par votre code de base de données.
+        // ...
+
+        // Si l'inscription réussit, redirige vers login.html
+        header("Location: login.html");
+        exit();
+    } else {
+        $error_message = "Les mots de passe ne correspondent pas.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <style>
-        /* Styles pour la fenêtre modale */
-        #modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Centrer verticalement */
+            background-color: #f0f0f0; /* Couleur de fond */
         }
 
-        #modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 30%;
+        /* Style pour le formulaire d'inscription */
+        form {
+            background-color: #ffffff;
+            padding: 40px; /* Espacement interne */
+            border-radius: 10px; /* Coins arrondis */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre */
+            width: 400px; /* Largeur du formulaire */
+            text-align: center; /* Centrer le texte */
+        }
+
+        /* Boutons */
+        button {
+            margin-top: 10px;
+        }
+
+        /* Style des messages d'erreur ou de succès */
+        .message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <div id="modal">
-        <div id="modal-content">
-            <p>Veuillez entrer le mot de passe secret pour continuer :</p>
-            <input type="password" id="secret-password" placeholder="Mot de passe secret" required>
-            <button onclick="verifyPassword()">Vérifier</button>
-            <p id="error-message" style="color:red;"></p>
-        </div>
-    </div>
 
-    <header>
-        <h1>Créer un compte</h1>
-    </header>
-    <main>
-        <form id="signup-form" action="signup_process.php" method="POST" style="display: none;">
-            <input type="text" name="first_name" placeholder="Prénom" required>
-            <input type="text" name="last_name" placeholder="Nom" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="tel" name="phone" placeholder="Numéro de téléphone" required>
-            <input type="password" name="password" placeholder="Mot de passe" required>
-            <input type="password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
-            <button type="submit">Créer un compte</button>
-        </form>
-    </main>
+<!-- Formulaire d'inscription -->
+<form action="" method="POST">
+    <input type="text" name="first_name" placeholder="Prénom" required>
+    <input type="text" name="last_name" placeholder="Nom" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Mot de passe" required>
+    <input type="password" name="confirm_password" placeholder="Confirmer mot de passe" required>
+    <button type="submit">Créer un compte</button>
+    <?php if (isset($error_message)): ?>
+        <p class="message error"><?php echo $error_message; ?></p>
+    <?php endif; ?>
+</form>
 
-    <script>
-        // Afficher la fenêtre modale au chargement de la page
-        window.onload = function() {
-            document.getElementById('modal').style.display = 'block';
-        }
-
-        function verifyPassword() {
-            var enteredPassword = document.getElementById('secret-password').value;
-            var correctPassword = 'Jean3v16';
-
-            if (enteredPassword === correctPassword) {
-                // Mot de passe correct, cacher la fenêtre modale et afficher le formulaire
-                document.getElementById('modal').style.display = 'none';
-                document.getElementById('signup-form').style.display = 'block';
-            } else {
-                // Afficher un message d'erreur
-                document.getElementById('error-message').textContent = 'Mot de passe incorrect';
-            }
-        }
-    </script>
 </body>
 </html>

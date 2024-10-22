@@ -22,7 +22,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     <p>Veuillez choisir une option :</p>
     <ul>
         <li><a href="login.html">Se connecter</a></li>
-        <li><a href="signup.html">Créer un compte</a></li>
+        <li><a href="check_password.php">Créer un compte</a></li>
     </ul>
 </body>
 </html>
