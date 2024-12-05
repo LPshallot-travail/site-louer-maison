@@ -1,19 +1,8 @@
 <?php
-session_start();
+include '../includes/session.php'; // Inclusion de session.php
 
-// Vérifiez si l'utilisateur est déjà connecté
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    // Rediriger vers la page principale si connecté
-    header("Location: http://localhost/test-location-maison/test/");
-    exit();
-}
-
-// Vérifiez si l'action de suppression de session est demandée
-if (isset($_GET['action']) && $_GET['action'] === 'clear_secret') {
-    // Supprimez la session du mot de passe secret
-    unset($_SESSION['secret_verified']);
-    echo "<p class='success'>La session du mot de passe secret a été supprimée.</p>";
-}
+// Récupérer les sessions actives
+$activeSessions = getActiveSessions($session);
 ?>
 
 <!DOCTYPE html>
@@ -34,5 +23,19 @@ if (isset($_GET['action']) && $_GET['action'] === 'clear_secret') {
     
     <!-- Lien pour supprimer la session du mot de passe secret -->
     <a href="?action=clear_secret">Supprimer la session du mot de passe secret</a>
+    
+    <!-- Lien pour supprimer la session utilisateur -->
+    <a href="?action=remove_user_session">Supprimer la session utilisateur</a>
+    
+    <h2>Sessions actives :</h2>
+    <ul>
+        <?php if (!empty($activeSessions)): ?>
+            <?php foreach ($activeSessions as $key => $value): ?>
+                <li><strong><?= htmlspecialchars($key) ?> :</strong> <?= htmlspecialchars($value) ?></li>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <li>Aucune session active</li>
+        <?php endif; ?>
+    </ul>
 </body>
 </html>

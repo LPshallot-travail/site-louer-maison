@@ -1,15 +1,11 @@
 <?php
-// Fonctions de sécurité
-
+// Hachage des mots de passe
 function hashPassword($password) {
     return password_hash($password, PASSWORD_DEFAULT);
 }
 
+// Vérification des mots de passe
 function verifyPassword($password, $hash) {
     return password_verify($password, $hash);
-}
-
-function isLoggedIn() {
-    return isset($_SESSION['user_id']);
 }
 ?>
