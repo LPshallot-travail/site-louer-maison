@@ -6,7 +6,14 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 $sessionStorage = new NativeSessionStorage();
 $session = new Session($sessionStorage);
-$session->start();
+$session->start(); 
+
+// Vérification si l'utilisateur n'est pas connecté (pas de "user_id" dans la session)
+if (!$session->has('user_id') && basename($_SERVER['PHP_SELF']) === 'index.php') {
+    // Si la personne n'est pas connectée, redirection vers home.php
+    header("Location: home.php");
+    exit();
+}
 
 // Fonction pour afficher les sessions actives
 function getActiveSessions($session) {
@@ -20,10 +27,10 @@ function getActiveSessions($session) {
     return $activeSessions;
 }
 
-// Si la session "user_id" est définie, rediriger vers index.html (uniquement à la création)
+// Si la session "user_id" est définie, rediriger vers index.php (uniquement à la création)
 if ($session->has('user_id') && !isset($_SESSION['redirected'])) {
     $_SESSION['redirected'] = true; // Marque que la redirection a eu lieu
-    header("Location: ../index.html");
+    header("Location: ../test/index.php");
     exit();
 }
 

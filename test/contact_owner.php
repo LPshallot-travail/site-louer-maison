@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     $stmt->execute(['id' => $id]);
     $house = $stmt->fetch();
 } else {
-    header("Location: index.html");
+    header("Location: index.php");
     exit();
 }
 ?>

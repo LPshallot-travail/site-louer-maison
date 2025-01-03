@@ -1,8 +1,7 @@
 <?php  
 include '../config/config.php';
 include '../includes/security.php';
-
-session_start();
+require_once '../includes/session.php'; // Inclure session.php pour utiliser Symfony
 
 // Vérification de la méthode POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Vérification si l'email est valide
     if ($email === false) {
-        $_SESSION['error'] = "L'email n'est pas valide.";
+        $session->set('error', "L'email n'est pas valide.");
         header("Location: login.php"); // Rediriger vers la même page pour afficher l'erreur
         exit();
     }
@@ -24,16 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Vérification des identifiants
     if ($user && verifyPassword($password, $user['password'])) {
-        // Créer la session "user_id" et le temps d'activité
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['LAST_ACTIVITY'] = time(); // Met à jour le temps d'activité
+        // Créer la session "user_id" et le temps d'activité en utilisant Symfony
+        $session->set('user_id', $user['id']);
+        $session->set('LAST_ACTIVITY', time()); // Met à jour le temps d'activité
 
-        // Rediriger vers `session.php` pour gérer les redirections
-        header("Location: session.php");
+        // Rediriger vers index.php pour la suite
+        header("Location: index.php");
         exit();
     } else {
         // Message d'erreur en cas d'identifiants incorrects
-        $_SESSION['error'] = "Identifiants incorrects. Veuillez réessayer.";
+        $session->set('error', "Identifiants incorrects. Veuillez réessayer.");
         header("Location: login.php"); // Rediriger vers la même page pour afficher l'erreur
         exit();
     }
@@ -50,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <!-- Affichage du message d'erreur si présent dans la session -->
-    <?php if (isset($_SESSION['error'])): ?>
-        <p class="error"><?php echo $_SESSION['error']; ?></p>
-        <?php unset($_SESSION['error']); ?>
+    <?php if ($session->has('error')): ?>
+        <p class="error"><?php echo $session->get('error'); ?></p>
+        <?php $session->remove('error'); ?>
     <?php endif; ?>
 
     <form action="login.php" method="POST">

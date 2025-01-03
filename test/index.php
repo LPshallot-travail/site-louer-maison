@@ -1,4 +1,14 @@
-<?php include '../includes/session.php'; ?>
+<?php
+// Inclure la gestion de la session
+include '../includes/session.php';
+
+// Vérifier si l'utilisateur est connecté
+if (!$session->has('user_id')) {
+    // Si l'utilisateur n'est pas connecté, rediriger vers home.php
+    header("Location: home.php");
+    exit();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -13,8 +23,8 @@
         <h1>Bienvenue sur notre site de location de maisons</h1>
         <nav>
             <ul>
-                <li><a href="search.html">Rechercher une maison</a></li>
-                <li><a href="post_listing.html">Publier une annonce</a></li>
+                <li><a href="search.php">Rechercher une maison</a></li>
+                <li><a href="post_listing.php">Publier une annonce</a></li>
                 <li><a href="logout.php">Se déconnecter</a></li>
             </ul>
         </nav>

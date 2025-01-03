@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$title, $description, $price, $rooms, $image_name]);
     }
 
-    header("Location: index.html");
+    header("Location: index.php");
     exit();
 }
 ?>
